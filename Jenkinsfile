@@ -1,38 +1,46 @@
-pipeline{
-  agent any
-  tools{
-    maven'Maven'
-  }
-  stages{
-    stage('CheckOutline'){
-      steps{
-        git branch:'main',url:'https://github.com/RISHI152-stack/devopstestmaven.git'
-      }
-    }
-    stage('Build'){
-      steps{
-        sh'mvn-clean-package'
-      }
-    }
-    stage('Test'){
-      steps{
-        sh'mvn test'
-      }
-    }
-    stage('Run Application'){
-      steps{
-        sh'java -jar target/SIMPLEMAVEN-1.0-SNAPSHOT.jar
-'
-      }
-    }
-  }
+pipeline {
+    agent any 
 
-  post{
-    success{
-      echo'build and deployment success'
+    tools {
+        maven 'Maven'  
     }
-    failure{
-      echo'failed'
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/RISHI152-stack/devopstestmaven.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'  
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'  
+            }
+        }
+
+        
+        
+       
+        stage('Run Application') {
+            steps {
+                sh 'java -jar target/SIMPLEMAVEN-1.0-SNAPSHOT.jar'
+            }
+        }
+
+        
     }
-  }
+
+    post {
+        success {
+            echo 'Build and deployment successful!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
 }
